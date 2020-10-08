@@ -30,7 +30,11 @@ import {
 	Nav,
 	TabContent,
 	TabPane,
-	UncontrolledTooltip
+	UncontrolledTooltip,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+	UncontrolledDropdown,
 } from "reactstrap";
 
 // core components
@@ -48,8 +52,8 @@ class MainPage extends React.Component {
 		this.handleClick = this.handleClick.bind(this);
 		this.handleClick2 = this.handleClick2.bind(this);
 		this.state = {
-			dropDownValue: "None",
-			dataList: ["None"],
+			dropDownValue: "All Suspects",
+			dataList: ["All Suspects"],
 			suspectCases: [],
 			movements: [],
 			error: false,
@@ -68,6 +72,9 @@ class MainPage extends React.Component {
 			showSelection2: false,
 			mapData: [],
 			tabs: 1,
+
+			suspectCasesOriginal: [],
+			movementsOriginal: [],
 		}
 	}
 
@@ -108,10 +115,10 @@ class MainPage extends React.Component {
 					const lols = Papa.parse(reader.result, { header: true, skipEmptyLines: true })
 
 					// Adds names into dropdown
-					this.setState({ dataList: ["All Suspected Cases", ...lols.data.map(names => names.firstName + " " + names.lastName)] })
+					this.setState({ dataList: ["All Suspects", ...lols.data.map(names => names.firstName + " " + names.lastName)] })
 
 					const data = lols.data
-					this.setState({ suspectCases: data })
+					this.setState({ suspectCasesOriginal: data,suspectCases: data })
 				}
 				reader.readAsText(file)
 				this.setState({ error: false })
@@ -143,7 +150,7 @@ class MainPage extends React.Component {
 					// this.postData('"' + JSON.stringify(lols.data) + '"')
 					// this.postMovements(JSON.stringify(lols.data))
 					const data = lols.data
-					this.setState({ movements: data })
+					this.setState({ movementsOriginal: data , movements: data})
 				}
 				reader.readAsText(file)
 				this.setState({ error: false })
@@ -155,8 +162,23 @@ class MainPage extends React.Component {
 		}
 	}
 
-	dropdownClicked(text) {
-		this.setState({ dropDownValue: text })
+	dropdownClicked = (e) => {
+		
+		let originalSus = this.state.suspectCasesOriginal
+		let originalMoves = this.state.movementsOriginal
+		this.setState({ dropDownValue: e.currentTarget.textContent, datas: [], mapData:[]})
+		if(e.currentTarget.textContent != "All Suspects"){
+			// console.log(this.state.suspectCases).filter
+			let firstName = e.currentTarget.textContent.split(" ")[0]
+			let lastName = e.currentTarget.textContent.split(" ")[1]
+
+			originalSus = originalSus.filter(x => x.firstName == firstName && x.lastName == lastName)
+
+			originalMoves = originalMoves.filter(x => x.suspectId == originalSus[0].id)
+
+		}
+
+		this.setState({suspectCases: originalSus, movements: originalMoves})
 	}
 
 	convertDate(date) {
@@ -261,19 +283,15 @@ class MainPage extends React.Component {
 
 		if (this.state.datas.length > 0) {
 			let placename = this.state.datas[0].locationShortaddress
-			// console.log(this.state.CCID)
 			this.state.datas.map(x => {
 				for (var data of this.state.CCID) {
 
-					// console.log(data)
 					if (x.peopleProfileId === data) {
 						IDs.push(x.peopleProfileId)
 					}
 				}
 
 			})
-
-			// console.log("TO: " + IDs)
 
 			let newItem = { ...this.state.CloseContacts, [placename]: IDs }
 
@@ -306,11 +324,7 @@ class MainPage extends React.Component {
 			let placename = this.state.datas[0].locationShortaddress
 			let IDs = this.state.CloseContacts[placename].filter(x => this.state.fromCCID.includes(x) === false).map(x => { return x })
 
-			// console.log("From: " + IDs)
-
 			let newItem = { ...this.state.CloseContacts, [placename]: IDs }
-
-			// console.log("Items:" + newItem)
 
 			this.setState({ CloseContacts: newItem })
 		}
@@ -329,31 +343,28 @@ class MainPage extends React.Component {
 	};
 
 	render() {
+		let placename
 
-		// position:"absolute", top:-10000
+		let displaySetting2 = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? "visible" : "hidden"
+		let maindp1 = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? "relative" : "absolute"
+		let maindp2 = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? 0 : -10000
 
-		let displayWarning, displaySetting2, ds1, ds3, placename, maindp1, maindp2, ds11, ds12, ds31, ds32
+		let ds1 = this.state.mapData.length > 0 ? "visible" : "hidden"
+		let ds11 = this.state.mapData.length > 0 ? "relative" : "absolute"
+		let ds12 = this.state.mapData.length > 0 ? 0 : -10000
 
-		displaySetting2 = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? "visible" : "hidden"
-		maindp1 = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? "relative" : "absolute"
-		maindp2 = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? 0 : -10000
+		let ds3 = this.state.datas.length > 0 ? "visible" : "hidden"
+		let ds31 = this.state.datas.length > 0 ? "relative" : "absolute"
+		let ds32 = this.state.datas.length > 0 ? 0 : -10000
 
-		ds1 = this.state.mapData.length > 0 ? "visible" : "hidden"
-		ds11 = this.state.mapData.length > 0 ? "relative" : "absolute"
-		ds12 = this.state.mapData.length > 0 ? 0 : -10000
-
-		ds3 = this.state.datas.length > 0 ? "visible" : "hidden"
-		ds31 = this.state.datas.length > 0 ? "relative" : "absolute"
-		ds32 = this.state.datas.length > 0 ? 0 : -10000
-
-		displayWarning = this.state.error ? "block" : "none"
+		let displayWarning = this.state.error ? "block" : "none"
 
 		let graph1
 
 		const that = this;
-		
-		console.log("yayyy")
-		console.log(this.state.mapData)
+
+		let mapss = this.state.suspectCases.length > 0 && this.state.movements.length > 0 ? <MainMap profile={this.state.suspectCases} movement={this.state.movements} dataRetrieved={this.dataRetrievedMap}/> : null
+
 
 		//// ### UNCOMMENT FOR GANTT CHART ###
 		if (this.state.mapData.length !== 0) {
@@ -364,18 +375,7 @@ class MainPage extends React.Component {
 		//// ### UNCOMMENT FOR GANTT CHART ###
 		if (testing !== undefined) {
 
-			console.log("TEST SET")
-			console.log(testing)
-
 			let lol = function (event, chartContext, config) {
-				// Name of place
-				console.log("Place Registered: ")
-				console.log(testing)
-				console.log(config.seriesIndex)
-				console.log(testing[config.seriesIndex])
-				console.log()
-				// console.log(config.seriesIndex)
-
 
 				that.setState({ placename: testing[config.seriesIndex].data[config.dataPointIndex].x, datetime: testing[config.seriesIndex].data[config.dataPointIndex].y })
 
@@ -398,7 +398,12 @@ class MainPage extends React.Component {
 						bar: { horizontal: true, barHeight: '80%' }
 					},
 					xaxis: {
-						type: 'datetime'
+						type: 'datetime',
+						labels: {
+							datetimeFormatter:{
+								hour: 'HH:mm'
+							}
+						}
 					},
 					stroke: {
 						width: 1
@@ -410,17 +415,20 @@ class MainPage extends React.Component {
 					legend: {
 						position: 'top',
 						horizontalAlign: 'left'
-					}
+					},
+					tooltip: {
+
+					},
 				}
 			}
 
-			console.log("Updated")
-			console.log(testing)
+			// console.log("Updated")
+			// console.log(testing)
 			// console.log(options.options)
 			graph1 = <Graph display={displaySetting2} options={options.options} series={testing} tool />
 		}
 
-		console.log(this.state.datas)
+		// console.log(this.state.datas)
 
 		// Creating the COnfirmed Cases
 		let mappingsCC = this.state.datas.filter(data => data.caseNumber !== null).map(data => {
@@ -649,9 +657,24 @@ class MainPage extends React.Component {
 												<br/>CLICK ON A MARKER AND SCROLL TO GANTT CHART
 												================================================
 											</p>
+											<UncontrolledDropdown group>
+												<DropdownToggle caret color="primary">
+													{this.state.dropDownValue}
+												</DropdownToggle>
+												
+												<DropdownMenu>
+													{
+														this.state.dataList.map(x => 
+															<DropdownItem onClick={this.dropdownClicked}>
+																{x}
+															</DropdownItem>
+														)
+													}
+												</DropdownMenu>
+											</UncontrolledDropdown>
 										</Col>
 									</Row>
-									<MainMap profile={this.state.suspectCases} movement={this.state.movements} dataRetrieved={this.dataRetrievedMap} />
+									{mapss}
 								</Row>
 							</Container>
 						</section>
@@ -698,7 +721,7 @@ class MainPage extends React.Component {
 														href="#pablo"
 														role="tab"
 													>
-														<i className="ni ni-cloud-upload-96 mr-2" />
+														<i className="ni ni-check-bold mr-2" />
 														Confirmed Cases
 													</NavLink>
 												</NavItem>
@@ -712,7 +735,7 @@ class MainPage extends React.Component {
 														href="#pablo"
 														role="tab"
 													>
-														<i className="ni ni-bell-55 mr-2" />
+														<i className="ni ni-collection mr-2" />
 														Close Contacts
 													</NavLink>
 												</NavItem>
@@ -726,7 +749,7 @@ class MainPage extends React.Component {
 														href="#pablo"
 														role="tab"
 													>
-														<i className="ni ni-calendar-grid-58 mr-2" />
+														<i className="ni ni-world mr-2" />
 														Public At The Place
 													</NavLink>
 												</NavItem>

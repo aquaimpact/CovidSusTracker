@@ -91,7 +91,7 @@ class TimelineChart extends React.Component{
             return(
                 <VerticalTimelineElement
                     className="vertical-timeline-element--work"
-                    date={this.convertSQLDate(x.datetimeEntered, x.datetimeLeft)}
+                    date={"Date: " + this.convertSQLDate(x.datetimeEntered, x.datetimeLeft)}
                     iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}>
 
                     {/* <h3 className="vertical-timeline-element-title">{x.locationShortaddress}</h3> */}

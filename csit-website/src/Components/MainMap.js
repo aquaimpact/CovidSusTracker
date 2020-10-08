@@ -5,7 +5,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYXF1YWltcGFjdCIsImEiOiJja2R0d2N3emswdzlwMnptc
 
 let map
 let counter = 0
-// let colorIDs = []
+let source = []
 
 class MainMap extends React.Component{
     
@@ -93,7 +93,8 @@ class MainMap extends React.Component{
     componentDidUpdate(){
 
         let that = this
-        if(this.props.profile.length > 0 && this.props.movement.length > 0 && counter !== 1){
+        console.log(map.style.sourceCaches);
+        if(this.props.profile.length > 0 && this.props.movement.length > 0 ){
             // if(IDs.length != 0){
             //     IDs = []
             // }
@@ -124,7 +125,7 @@ class MainMap extends React.Component{
             // Group by location address as key to the person array
             const personGroupedByColor = groupBy(this.props.movement, 'locationShortaddress');
             
-            console.log(personGroupedByColor)
+            // console.log(personGroupedByColor)
 
             var UPoints = Object.keys(personGroupedByColor).map(function(key) {
                 if(personGroupedByColor[key].length === 1){
@@ -186,6 +187,54 @@ class MainMap extends React.Component{
                 }
             });
 
+            for(var key in map.style.sourceCaches){
+                if(key != 'composite'){
+                    map.removeLayer(key)
+                    if(key == "placeIDs"){
+                        map.off('click', 'placeIDs', function(e){
+
+                            var placeID = e.features[0].properties.placeID;           
+                            var description = e.features[0].properties.description;
+                            var movementID = e.features[0].properties.movementID;
+                            var enter = e.features[0].properties.enter;
+                            var leave = e.features[0].properties.leave;
+                            
+                            that.props.dataRetrieved(movementID)
+            
+
+                        });
+            
+                        map.off('mouseenter', 'placeIDs', function(e) {
+            
+                            // Change the cursor style as a UI indicator.
+                            map.getCanvas().style.cursor = 'pointer';
+                            
+                            var coordinates = e.features[0].geometry.coordinates.slice();
+                            var description = e.features[0].properties.description;
+            
+                            // Ensure that if the map is zoomed out such that multiple
+                            // copies of the feature are visible, the popup appears
+                            // over the copy being pointed to.
+                            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                            }
+                            
+                            // Populate the popup and set its coordinates
+                            // based on the feature found.
+                            popup.setLngLat(coordinates).setHTML(description).addTo(map);
+                        });
+                            
+                        map.off('mouseleave', 'placeIDs', function() {
+                            map.getCanvas().style.cursor = '';
+                            popup.remove();
+                        });
+                    }
+                    map.removeSource(key)
+                }
+                // console.log(map.getStyle().layers)
+            }
+            
+
             map.loadImage(
                 'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
                 // Add an image to use as a custom marker
@@ -202,7 +251,7 @@ class MainMap extends React.Component{
                             return([x.locationLong, x.locationLat])
                         })
 
-                        console.log(UMovements)
+                        // console.log(UMovements)
 
                         map.addSource(lol, {
                             'type': 'geojson',
@@ -217,6 +266,7 @@ class MainMap extends React.Component{
                         });
     
                         let color = that.generateColor()
+                        source.push(lol)
     
                         map.addLayer({
                             'id': lol,
