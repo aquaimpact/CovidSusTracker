@@ -2,7 +2,7 @@ Hi There! Here is a complete documentation of this application
 
 ### What is it?
 - This is a tool that allows you to add CSV files and compare them against the database to find out who were the people that might have gotten into contact with this person.
-- This tool focuses on comparing 3 main groups of people with the suspects. They are the Confirmed Cases, Close Contacts and People At The Public.
+- This tool focuses on comparing 3 main groups of people with the suspects. They are the Confirmed Cases (CC), Close Contacts (Close) and People At The Public (PTAP).
 - This is a one time use tool. This means that once you exit the page, the data will be cleared.
 
 <img align="right" height="250" alt="" src="https://www.world-heart-federation.org/wp-content/uploads/WEB-_PREVENT-_MEDICAL_650.gif" />
@@ -21,3 +21,7 @@ Hi There! Here is a complete documentation of this application
 - On intersection of paths, it is easy to check if the suspects have come into contact with each other using the gantt chart
 - Sections will only appear if there are items for users to use. (For example, if there is no data is shown in the table section, no visuals will appear)
 - Easy visualisation of person's routes in the profile page
+- Allows user to go in depth (+ 1 layer) to view intersection of person (CC, Close, PTAP) with other people
+
+### Contributers
+<code><a href="www.google.com"><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" alt="ReactJs"></a></code>
