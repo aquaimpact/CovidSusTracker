@@ -5,6 +5,8 @@ Hi There! Here is a complete documentation of this application
 - This tool focuses on comparing 3 main groups of people with the suspects. They are the Confirmed Cases, Close Contacts and People At The Public.
 - This is a one time use tool. This means that once you exit the page, the data will be cleared.
 
+<img align="right" height="250" width="375" alt="" src="https://www.world-heart-federation.org/wp-content/uploads/WEB-_PREVENT-_MEDICAL_650.gif" />
+
 ### Languages and Tools Used
 <code><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" alt="ReactJs"></code>
 <code><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/postgresql/postgresql.png" alt="Postgres"></code>
