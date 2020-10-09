@@ -12,3 +12,10 @@ Hi There! Here is a complete documentation of this application
 <code><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/spring-boot/spring-boot.png" alt="Spring Boot"></code>
 <code><img height="30" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Tomcat-logo.svg/1200px-Tomcat-logo.svg.png" alt="Apache Tomcat"></code>
 <code><img height="30" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1200px-CSS3_logo_and_wordmark.svg.png" alt="CSS"></code>
+
+### Features
+- CSV importing
+- Easy to use map to show the path of the suspects (can be filtered for easier viewing)
+- On intersection of paths, it is easy to check if the suspects have come into contact with each other using the gantt chart
+- Sections will only appear if there are items for users to use. (For example, if there is no data is shown in the table section, no visuals will appear)
+- Easy visualisation of person's routes in the profile page
