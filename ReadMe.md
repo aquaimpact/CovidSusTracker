@@ -24,4 +24,4 @@ Hi There! Here is a complete documentation of this application
 - Allows user to go in depth (+ 1 layer) to view intersection of person (CC, Close, PTAP) with other people
 
 ### Contributers
-<code><a href="www.google.com"><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" alt="ReactJs"></a></code>
+<code><a href="https://www.google.com/"><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" alt="ReactJs"></a></code>
