@@ -6,6 +6,7 @@ Hi There! Here is a complete documentation of this application
 - This is a one time use tool. This means that once you exit the page, the data will be cleared.
 
 <img align="right" width="100" alt="" src="https://www.zeliot.in/images/zeliot/employee.gif" />
+<img width="100" alt="" src="https://www.zeliot.in/images/zeliot/employee.gif" />
 
 ### Languages and Tools Used
 <code><img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" alt="ReactJs"></code>
